@@ -1,10 +1,12 @@
+import java.util.ArrayDeque;
+
 public class BinarySearchTreeMain {
 
 
     public static void main(String[] args) {
 
         Node n1 = new Node(8);
-        Node n2 = new Node(3);
+        Node n2 = new Node(4);
         Node n3 = new Node(10);
         Node n4 = new Node(1);
         Node n5 = new Node(6);
@@ -42,6 +44,67 @@ public class BinarySearchTreeMain {
         printInorderBST(root);
         System.out.println();
         System.out.println("Cehcking if the given tree is BSt or not:" + isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        System.out.println();
+        System.out.println("Noe performing teh twosumusing bST");
+        System.out.println(" Fro calcualting teh sum 18 exist in bst or not : "+twoSumBST(root,18));
+    }
+
+    static boolean twoSumBST(Node root, int targetSum) {
+        Node cur1 = root, cur2 = root;
+        int val1 = 0, val2 = 0;
+        boolean done1 = false, done2 = false;
+        ArrayDeque<Node> stack1 = new ArrayDeque<>();
+        ArrayDeque<Node> stack2 = new ArrayDeque<>();
+        while (true) {
+            //iterate inorder
+            while (done1 == false) {
+                if (cur1 != null) {
+                    stack1.push(cur1);
+                    cur1 = cur1.left;
+                } else {
+                    if (stack1.isEmpty()) {
+                        done1 = true;
+                    } else {
+                        Node pop = stack1.pop();
+                        val1 = pop.data;
+                        cur1 = pop.right;
+                        done1 = true;
+                    }
+                }
+            }
+
+            //iterate reverseinorder
+            while (done2 == false) {
+                if (cur2 != null) {
+                    stack2.push(cur2);
+                    cur2 = cur2.right;
+                } else {
+                    if (stack2.isEmpty()) {
+                        done2 = true;
+                    } else {
+                        Node pop = stack2.pop();
+                        val2 = pop.data;
+                        cur2 = pop.left;
+                        done2 = true;
+                    }
+                }
+            }
+
+            //calcualte the sum using teh current val values
+            int sum = val1 + val2;
+            if (val1 != val2 && sum == targetSum) {
+                return true;
+            } else if (val1 + val2 < targetSum) {
+                done1 = false;
+            } else if (val1 + val2 > targetSum) {
+                done2 = false;
+
+            }
+            if (val1 >= val2) {
+                return false;
+            }
+        }
+
     }
 
     static Node getInorderPredecessor(Node root, int key, Node predecessor) {
@@ -50,12 +113,12 @@ public class BinarySearchTreeMain {
             return getInorderPredecessor(root.left, key, predecessor);
         } else if (root.data < key) {//moving to right
             predecessor = root;
-            return getInorderPredecessor(root.right,key,predecessor);
+            return getInorderPredecessor(root.right, key, predecessor);
         } else {
-            if(root.left == null) {
+            if (root.left == null) {
                 return predecessor;
             } else {
-                getMax(root.left);
+                return getMax(root.left);
             }
         }
     }
