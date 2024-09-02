@@ -46,7 +46,27 @@ public class BinarySearchTreeMain {
         System.out.println("Cehcking if the given tree is BSt or not:" + isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
         System.out.println();
         System.out.println("Noe performing teh twosumusing bST");
-        System.out.println(" Fro calcualting teh sum 18 exist in bst or not : "+twoSumBST(root,18));
+        System.out.println(" Fro calculating the sum 18 exist in bst or not : " + twoSumBST(root, 18));
+        System.out.println();
+        int arr[]= {1,3,4,5,6,7,9,10};
+        System.out.println("Printing BST from sorted array");
+        Node node = createBalancedBSTFromSortedArray(arr,0,arr.length-1);
+        System.out.println();
+        System.out.println("Printing the inorder BST NOW:");
+        printInorderBST(node);
+        System.out.println();
+
+        System.out.println("Its this a BST? : "+isBST(node,Integer.MIN_VALUE,Integer.MAX_VALUE));
+    }
+
+    static Node createBalancedBSTFromSortedArray(int[] arr, int left, int right) {
+        if (left > right) return null;
+        int mid = (left+right)/2;
+        Node root = new Node(arr[mid]);
+        root.left = createBalancedBSTFromSortedArray(arr,left,mid-1);
+        root.right = createBalancedBSTFromSortedArray(arr,mid+1,right);
+
+        return root;
     }
 
     static boolean twoSumBST(Node root, int targetSum) {
